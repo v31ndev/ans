@@ -4,8 +4,9 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <getopt.h>
 
-#define VERSION "1.1"
+#define VERSION "1.2"
 #define VERSION_DATE "7.1.2026"
 #define ENG_LENGHT  26
 
@@ -21,12 +22,22 @@ int main(int argc, char **argv) {
     int opt;
     bool rawOutput = false;
 
+    static struct option long_options[] = {
+        {"help",   no_argument,       0, 'h'}, // --help
+        {"info",   no_argument,       0, 'i'}, // --info
+        {"raw",    no_argument,       0, 'r'}, // --raw
+        {"to-alpha", required_argument, 0, 'a'}, // --to-alpha <number>
+        {"to-num", required_argument, 0, 'n'},   // --to-num <ANS string>
+        {0, 0, 0, 0} // ukončenie
+    };
+
     if(argc == 1) {
         fprintf(stderr, "Invalid syntax, try -h for help\n");
         return 1;
     }
 
-    while((opt = getopt(argc, argv, "hirn:a:")) != -1) {
+    int optionIndex = 0;
+    while((opt = getopt_long(argc, argv, "hirn:a:", long_options, &optionIndex)) != -1) {
         switch(opt) {
             case 'h':
                 Help();
@@ -38,20 +49,42 @@ int main(int argc, char **argv) {
                 rawOutput = true;
                 break;
             case 'n': {
+                if(!optarg) {
+                    fprintf(stderr, "Error: -n requires a value\n");
+                    return 1;
+                }
+
                 char *result = ToNum(optarg);
+                if(!result) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    return 1;
+                }
+
                 if(rawOutput)
                     printf("%s", result);
                 else
                     printf("-%c \"%s\" -> %s\n", opt, optarg, result);
+
                 free(result);
                 break;
             }
             case 'a': {
+                if(!optarg) {
+                    fprintf(stderr, "Error: -a requires a value\n");
+                    return 1;
+                }
+                
                 char *result = ToAlpha(optarg);
+                if(!result) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    return 1;
+                }
+                
                 if(rawOutput)
                     printf("%s", result);
                 else
                     printf("-%c \"%s\" -> %s\n", opt, optarg, result);
+                
                 free(result);
                 break;
             }
@@ -81,12 +114,11 @@ void Help(void) {
     putchar('\n');
 
     printf("Options:\n");
-    printf("  -h           Show this help message\n");
-    printf("  -i           Show detailed program description\n");
-    //printf("  -I           Explain how the ANS system works\n");
-    printf("  -r           Output result only (raw output)\n");
-    printf("  -a <number>  Convert decimal number to ANS format\n");
-    printf("  -n <string>  Convert ANS string to decimal number\n");
+    printf("  -h or --help                Show this help message\n");
+    printf("  -i or --info                Show detailed program description\n");
+    printf("  -r or --raw                 Output result only (raw output)\n");
+    printf("  -a <number> or --to-alpha   Convert decimal number to ANS format\n");
+    printf("  -n <string> or --to-num     Convert ANS string to decimal number\n");
     
     putchar('\n');
     
@@ -98,13 +130,7 @@ void Help(void) {
 
 void About(void) {
     putchar('\n');
-    /*
-    printf("ANS - Alphabetical Numeric System\n");
-    printf("version %s (released %s)\n", VERSION, VERSION_DATE);
-    printf("Created by v31ndev in cooperation with (c) PORS EAST Software, 2026\n");
-    printf("Initial release: 7.1.2026\n");
-    putchar('\n');
-    */
+
     printf("ANS - Alphabetical Numeric System\n");
     printf("Version %s (%s)\n", VERSION, VERSION_DATE);
     printf("(c) v31ndev 2026\n");
@@ -118,6 +144,9 @@ void About(void) {
 
     printf("Each letter represents a numeric value (A = 0, B = 1, ..., Z = 25),\n");
     printf("similar to how hexadecimal or other base-N systems work.\n");
+    printf("For example:\n");
+    printf("  \"-n ANS\" outputs \"356\"\n");
+    printf("  \"-a 3.14159\" outputs \"D.UYP\"\n");
 
     putchar('\n');
 

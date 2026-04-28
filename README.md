@@ -18,30 +18,30 @@ This simple program allows these conversions:
 
 ## Usage
 
-`ans [options]`
+`./ans [options]`
 
 options:
 
-* `-h` → displays help
-* `-i` → shows detailed program description
-* `-r` → output result only (raw output)
-* `-a <number>` → converts `<number>` to `<ANS string>`
-* `-n <ANS string>` → converts `<ANS string>` to a decimal number
+* `-h` or `--help` → displays help
+* `-i` or `--info` → shows detailed program description
+* `-r` or `--raw` → output result only (raw output)
+* `-a <number>` or `--to-alpha <number>` → converts `<number>` to `<ANS string>`
+* `-n <ANS string>` or `--to-num <ANS string>` → converts `<ANS string>` to a decimal number
 
 ### Examples
 
 ```bash
-    $ ./ans -a 27
-    -a "27" -> BB
+$ ./ans -a 27
+-a "27" -> BB
 
-    $ ./ans -n BC
-    -n "BC" -> 28
+$ ./ans -n BC
+-n "BC" -> 28
 
-    $ ./ans -r -a 53
-    CB
+$ ./ans -r -a 53
+CB
   
-    $ ./ans -r -n CD
-    28
+$ ./ans -r -n CD
+28
 ```
 
 ## Notes
