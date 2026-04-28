@@ -1,0 +1,9 @@
+1.0 (7.1.2026):
+	- Initial release
+
+1.1 (7.1.2026):
+	- Design changes
+
+1.2 (7.1.2026):
+	- Added long flags
+	- Error handling
