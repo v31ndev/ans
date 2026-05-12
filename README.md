@@ -44,7 +44,7 @@ $ ./ans -r -n CD
 28
 ```
 
-> **Note:** In case of floating point numbers, the number before and after the floating point are calculated separately. The conversion works both ways (NUM to ANS, ANS to NUM). Both `.` and `,` separators are supported.
+> **Note:** In case of floating point numbers, the numbers before and after the floating point are calculated separately. The conversion works both ways (NUM to ANS, ANS to NUM). Both `.` and `,` separators are supported.
 >```bash
 >$ ./ans -r -a 12
 >M
