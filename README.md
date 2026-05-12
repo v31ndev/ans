@@ -27,6 +27,26 @@ options:
 * `-r` or `--raw` → output result only (raw output)
 * `-a <number>` or `--to-alpha <number>` → converts `<number>` to `<ANS string>`
 * `-n <ANS string>` or `--to-num <ANS string>` → converts `<ANS string>` to a decimal number
+> **Note:** In case of floating point numbers, the number before and after the floating point are calculated separately. The conversion works both ways (NUM to ANS, ANS to NUM). Both `.` and `,` separators are supported.
+>```bash
+>$ ./ans -r -a 12
+>M
+>
+>$ ./ans -r -a 34
+>BI
+>
+>$ ./ans -r -a 12.34
+>M.BI
+>
+>$ ./ans -r -a 12,34
+>M,BI
+>
+>$ ./ans -r -n M.BI
+>12.34
+>
+>$ ./ans -r -n M,BI
+>12,34
+>```
 
 ### Examples
 
